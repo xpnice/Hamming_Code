@@ -1,20 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Grid from '@material-ui/core/Grid';
 import jsonData from "./config.json";
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
 //console.log(jsonData[0].inf_length);
 //console.log(jsonData[0].inf_code);
 class Square extends React.Component {
 
    render() {
-      var style = { color: this.props.color };
       return (
-         < button className="square"
-            style={style}
-            onClick={() => this.props.onClick()} //触发board中的onclick
+         <Button
+            variant="contained"
+            color={this.props.color}
+            onClick={() => this.props.onClick()}
          >
             {this.props.value}
-         </button>
+         </Button>
       );
    }
 }
@@ -42,17 +48,27 @@ class Board extends React.Component {
    }
    renderSquare_inf(i) {
       if (i < this.state.length)
-         return <Square value={this.state.squares[i].inf} //值通过propds传递给子组件
-            color={this.state.squares[i].selected === 0 ? "black" : "red"}
+      return (
+         <Button
+            variant="contained"
+            color={this.state.squares[i].selected === 0 ? "default" : "secondary"}
             onClick={() => this.handleClick(i)}
-         />;
+         >
+            {this.state.squares[i].inf}
+         </Button>
+      );
    }
    renderSquare_pos(i) {
       if (i < this.state.length)
-         return <Square value={this.state.squares[i].pos} //值通过propds传递给子组件
-            color={"black"}
+      return (
+         <Button
+            variant="contained"
+            color={this.state.squares[i].selected === 0 ? "default" : "secondary"}
             onClick={() => this.handleClick(i)}
-         />;
+         >
+            {this.state.squares[i].pos}
+         </Button>
+      );
    }
    handleClick(i) { //点击触发，取反
       var that = this;
@@ -169,7 +185,7 @@ class Board extends React.Component {
       });
    }
    render() {
-      const status = '汉明码'
+      const status = 'Hamming_Code'
       const gen_ch = '生成校验位'
       const gen_cd = '生成校验码'
       const init_h = '重置'
@@ -177,49 +193,94 @@ class Board extends React.Component {
       const inf_pos = [];
       for (var i = 0; i < this.state.length; i++) {
          inf_code.push(
-            <div key={i.toString()}>
-               {this.renderSquare_inf(i)}
-            </div>
+            this.renderSquare_inf(i)
          )
          inf_pos.push(
-            <div key={i.toString()}>
-               {this.renderSquare_pos(i)}
-            </div>
+            this.renderSquare_pos(i)
          )
       }
+      console.log(inf_code);
       return (
-         <div>
-            <div className="board-row">
-               <div className="status">{status}</div>
-            </div>
-            <div className="board-row">
-               {inf_code}
-            </div>
-            <div className="board-row">
-               {inf_pos}
-            </div>
-            <CALC />
-            < button className="mybut"
-               disabled={!this.state.able[0]}
-               onClick={() => this.init_Square()} //
-            >
-               {init_h}
-            </button>
-            < button className="mybut"
-               disabled={!this.state.able[1]}
+         <Grid container spacing={3}>
+            <Grid item xs={6}>
+               <Typography variant="h4" gutterBottom>
+                  {status}
+               </Typography>
+            </Grid>
+            <Grid item xs={1} >
+               <Chip
+                  variant="outlined"
+                  size="medium"
+                  avatar={<Avatar>F</Avatar>}
+                  label="冯惠"
+               //onClick={handleClick}
+               />
+            </Grid>
+            <Grid item xs={1} >
+               <Chip
+                  variant="outlined"
+                  size="medium"
+                  avatar={<Avatar>L</Avatar>}
+                  label="李沿澎"
+               //onClick={handleClick}
+               />
+            </Grid>
+            <Grid item xs={1} >
+               <Chip
+                  variant="outlined"
+                  size="medium"
+                  avatar={<Avatar>T</Avatar>}
+                  label="田庚轩"
+               //onClick={handleClick}
+               />
+            </Grid>
+            <Grid item xs={6}>
+               <ButtonGroup
+                  color="secondary"
+                  size="large"
+                  fullWidth aria-label="full width outlined button group">
+                  {inf_code}
+                 
+               </ButtonGroup>
+               <ButtonGroup
+                  color="secondary"
+                  size="large"
+                  fullWidth aria-label="full width outlined button group">
+                  {inf_pos}
+               </ButtonGroup>
+            </Grid>
+            <Grid item xs={6}>
+            </Grid>
+            <Grid item xs={6}>
+               <ButtonGroup
+                  color="secondary"
+                  size="large"
+                  fullWidth aria-label="full width outlined button group">
+                  <Button
+                     variant="contained"
+                     disabled={!this.state.able[0]}
+                     onClick={() => this.init_Square()} //
+                  >
+                     {init_h}
+                  </Button>
+                  <Button
+                     variant="contained"
+                     disabled={!this.state.able[1]}
+                     onClick={() => this.gen_ch()} //
+                  >
+                     {gen_ch}
+                  </Button>
+                  <Button
+                     variant="contained"
+                     disabled={!this.state.able[2]}
+                     onClick={() => this.gen_cd()} //
+                  >
+                     {gen_cd}
+                  </Button>
+               </ButtonGroup>
+            </Grid>
+         </Grid>
 
-               onClick={() => this.gen_ch()} //
-            >
-               {gen_ch}
-            </button>
-            < button className="mybut"
-               disabled={!this.state.able[2]}
-
-               onClick={() => this.gen_cd()} //
-            >
-               {gen_cd}
-            </button>
-         </div>
       );
    }
 }
@@ -290,21 +351,7 @@ class CALC extends React.Component {
 
 
 }
-class Game extends React.Component {
-   render() {
-      return (
-         <div className="game">
-            <div className="game-board">
-               <Board />
-            </div>
-         </div>
-      );
-   }
-}
-
-// ========================================
-
 ReactDOM.render(
-   <Game />,
+   <Board />,
    document.getElementById('root')
 );
