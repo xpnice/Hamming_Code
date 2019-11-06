@@ -1,6 +1,6 @@
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import Grid from '@material-ui/core/Grid';
 import jsonData from "./config.json";
 import Button from '@material-ui/core/Button';
@@ -8,23 +8,22 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-//console.log(jsonData[0].inf_length);
-//console.log(jsonData[0].inf_code);
-class Square extends React.Component {
-
-   render() {
-      return (
-         <Button
-            variant="contained"
-            color={this.props.color}
-            onClick={() => this.props.onClick()}
-         >
-            {this.props.value}
-         </Button>
-      );
-   }
-}
-
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from '@material-ui/core/Box';
+import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+const theme = createMuiTheme({
+   palette: {
+      primary: {
+         main: "#00e676"
+      },
+      secondary: {
+         main: "#00e676"
+      },
+   },
+});
 class Board extends React.Component {
    constructor(props) {
       super(props);
@@ -40,7 +39,7 @@ class Board extends React.Component {
          };
       }
       this.state = {
-         squares: squares,//父组件的初始化
+         squares: squares,
          length: jsonData[0].inf_length,
          code: jsonData[0].inf_code,
          able: able
@@ -48,27 +47,29 @@ class Board extends React.Component {
    }
    renderSquare_inf(i) {
       if (i < this.state.length)
-      return (
-         <Button
-            variant="contained"
-            color={this.state.squares[i].selected === 0 ? "default" : "secondary"}
-            onClick={() => this.handleClick(i)}
-         >
-            {this.state.squares[i].inf}
-         </Button>
-      );
+         return (
+            <Button
+               key={'inf' + i}
+               variant="contained"
+               color={this.state.squares[i].selected === 0 ? "default" : "secondary"}
+               onClick={() => this.handleClick(i)}
+            >
+               {this.state.squares[i].inf}
+            </Button>
+         );
    }
    renderSquare_pos(i) {
       if (i < this.state.length)
-      return (
-         <Button
-            variant="contained"
-            color={this.state.squares[i].selected === 0 ? "default" : "secondary"}
-            onClick={() => this.handleClick(i)}
-         >
-            {this.state.squares[i].pos}
-         </Button>
-      );
+         return (
+            <Button
+               key={'pos' + i}
+               variant="contained"
+               color={this.state.squares[i].selected === 0 ? "default" : "secondary"}
+               onClick={() => this.handleClick(i)}
+            >
+               {this.state.squares[i].pos}
+            </Button>
+         );
    }
    handleClick(i) { //点击触发，取反
       var that = this;
@@ -199,9 +200,10 @@ class Board extends React.Component {
             this.renderSquare_pos(i)
          )
       }
-      console.log(inf_code);
+      //console.log(inf_code);
       return (
          <Grid container spacing={3}>
+
             <Grid item xs={6}>
                <Typography variant="h4" gutterBottom>
                   {status}
@@ -240,7 +242,6 @@ class Board extends React.Component {
                   size="large"
                   fullWidth aria-label="full width outlined button group">
                   {inf_code}
-                 
                </ButtonGroup>
                <ButtonGroup
                   color="secondary"
@@ -253,7 +254,7 @@ class Board extends React.Component {
             </Grid>
             <Grid item xs={6}>
                <ButtonGroup
-                  color="secondary"
+                  color="primary"
                   size="large"
                   fullWidth aria-label="full width outlined button group">
                   <Button
@@ -284,74 +285,82 @@ class Board extends React.Component {
       );
    }
 }
-class CALC extends React.Component {
-   constructor(props) {
-      super(props);
-      const squares = [];
-      const able = [1, 1, 0];
-      var i;
-      for (i = 0; i < jsonData[0].inf_length; i++) {
-         squares[i] = {
-            inf: jsonData[0].inf_code[i] === '1' ? 1 : 0,
-            pos: 'H' + i,
-            check_no: -1,
-            selected: 0
-         };
-      }
-      this.state = {
-         squares: squares,//父组件的初始化
-         length: jsonData[0].inf_length,
-         code: jsonData[0].inf_code,
-         able: able
-      };
-   }
-   renderSquare_inf(i) {
-      if (i < this.state.length)
-         return <Square value={this.state.squares[i].inf} //值通过propds传递给子组件
-            color={this.state.squares[i].selected === 0 ? "black" : "red"}
-            onClick={() => this.handleClick(i)}
-         />;
-   }
-   renderSquare_pos(i) {
-      if (i < this.state.length)
-         return <Square value={this.state.squares[i].pos} //值通过propds传递给子组件
-            color={"black"}
-            onClick={() => this.handleClick(i)}
-         />;
-   }
-   render() {
-      const status = '计算过程'
-      const inf_code = [];
-      for (var i = 0; i < this.state.length; i++) {
-         inf_code.push(<div className="board-row"></div>)
-         for (var j = 0; j < this.state.length; j++) {
-            inf_code.push(
-               <div key={(i * this.state.length + j).toString()}>
-                  {this.renderSquare_inf(i)}
-               </div>
-            )
-         }
-      }
-      console.log(inf_code)
-      return (
-         <div>
-            <div className="board-row">
-               <div className="status">{status}</div>
-            </div>
-            <div className="board-row">
-               <div className="status">S1=S2 XOR H0 XOR H1</div>
-            </div>
-            <div className="board-row">
-               {inf_code}
-            </div>
+function TabPanel(props) {
+   const { children, value, index, ...other } = props;
 
-         </div>
-      );
-   }
+   return (
+      <Typography
+         component="div"
+         role="tabpanel"
+         hidden={value !== index}
+         id={`scrollable-auto-tabpanel-${index}`}
+         aria-labelledby={`scrollable-auto-tab-${index}`}
+         {...other}
+      >
+         <Box p={3}>{children}</Box>
+      </Typography>
+   );
+}
 
+TabPanel.propTypes = {
+   children: PropTypes.node,
+   index: PropTypes.any.isRequired,
+   value: PropTypes.any.isRequired,
+};
 
+function a11yProps(index) {
+   return {
+      id: `scrollable-auto-tab-${index}`,
+      'aria-controls': `scrollable-auto-tabpanel-${index}`,
+   };
+}
+
+const useStyles = makeStyles(theme => ({
+   root: {
+      flexGrow: 1,
+      width: '100%',
+      backgroundColor: theme.palette.background.paper,
+   },
+}));
+
+export default function ScrollableTabsButtonAuto() {
+   const classes = useStyles();
+   const [value, setValue] = React.useState(0);
+
+   const handleChange = (event, newValue) => {
+      setValue(newValue);
+   };
+
+   return (
+      <div className={classes.root}>
+         <MuiThemeProvider theme={theme}>
+            <AppBar position="static" color="default">
+               <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  variant="scrollable"
+                  scrollButtons="auto"
+                  aria-label="scrollable auto tabs example"
+               >
+                  <Tab label="Experiment" {...a11yProps(0)} />
+                  <Tab label="Concepts" {...a11yProps(1)} />
+               </Tabs>
+            </AppBar>
+         </MuiThemeProvider>
+         <TabPanel value={value} index={0}>
+            <MuiThemeProvider theme={theme}>
+               <Board />
+            </MuiThemeProvider>
+         </TabPanel>
+         <TabPanel value={value} index={1}>
+            WHAT IS HAMMING CODE
+       </TabPanel>
+      </div>
+   );
 }
 ReactDOM.render(
-   <Board />,
+   <ScrollableTabsButtonAuto />,
    document.getElementById('root')
 );
