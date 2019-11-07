@@ -46,7 +46,8 @@ class Board extends React.Component {
          length: jsonData[0].inf_length,
          code: jsonData[0].inf_code,
          able: able,
-         select_no: -1
+         select_no: -1,
+         decode:null
       };
    }
    renderSquare_inf(i) {
@@ -79,13 +80,18 @@ class Board extends React.Component {
       var that = this;
       var j;
       let squares = that.state.squares.slice();
+      var new_code = Array(that.state.length);
       if (i < that.state.length) {
          if (that.state.squares[i].check_no === -1) {
-            if (that.state.able[1])
-               squares[i].inf = 1 - that.state.squares[i].inf;
             for (j = 0; j < that.state.length; j++) {
                squares[j].selected = 0; //其他恢复颜色
+               new_code[j] = squares[j].inf;
             }
+            if (that.state.able[1]) {
+               squares[i].inf = 1 - that.state.squares[i].inf;
+               new_code[i] = squares[i].inf;
+            }
+
          }
          else if (that.state.squares[i].check_no !== -1) {
             squares[i].selected = 1;//选取的校验位置红
@@ -101,7 +107,8 @@ class Board extends React.Component {
       }
       this.setState({
          squares: squares,
-         select_no: that.state.squares[i].check_no
+         select_no: that.state.squares[i].check_no,
+         code: new_code.join('')
       });
       // console.log(this.state.squares)
    }
@@ -218,28 +225,31 @@ class Board extends React.Component {
          able: [1, 0, 0]
       });
    }
+   getdecode(e) {
+      //e.preventDefault();
+      this.setState({
+         decode: e.target.value
+      })
+      console.log(this.state.decode)
+   }
    render() {
       const status = 'Hamming_Code'
       const gen_ch = '生成校验位'
       const gen_cd = '生成校验码'
       const init_h = '重置'
+      const detect='检纠错'
+      const more='Learn More'
       const inf_code = [];
       const inf_pos = [];
-      //var gen_code = this.state.code;
-      //console.log(gen_code)
-      //console.log(gen_code.toString())
       var i;
       let cal = '';
       if (this.state.select_no !== -1) {
          var no = this.state.select_no + 1;
          i = this.get_check_pos(no - 1);
-         // console.log(i);
          cal = this.state.squares[i].pos + " = " + this.state.squares[i + 1].pos;
-         //console.log(no)
          for (var j = i + 2; j < this.state.length; j++) {
             if (((j - i - 1) % (2 * no)) < no) {
                cal += " XOR " + this.state.squares[j].pos;
-               //     console.log(this.state.squares[j])
             }
          }
       }
@@ -251,10 +261,8 @@ class Board extends React.Component {
             this.renderSquare_pos(i)
          )
       }
-      //console.log(inf_code);
       return (
          <Grid container spacing={3}>
-
             <Grid item xs={6}>
                <Typography variant="h4" gutterBottom>
                   {status}
@@ -304,38 +312,16 @@ class Board extends React.Component {
                </Grid>
             </ClickAwayListener>
             <Grid item xs={6}>
-               <TextField
-                  id="outlined-read-only-input"
-                  label="Ecoding"
-                  value={this.state.code}
-                  className="textField"
-                  margin="normal"
-                  InputProps={{
-                     readOnly: true,
-                  }}
-                  variant="outlined"
-               />
+               <UncontrolledTextField label="Encoding" readOnly={true} value={this.state.code} />
             </Grid>
             <Grid item xs={6}>
-               <TextField
-                  id="outlined-input"
-                  label="Decoding"
-                  //defaultValue={gen_code}
-                  className="textField"
-                  margin="normal"
-                  InputProps={{
-                     readOnly: true,
-                  }}
-                  variant="outlined"
-               />
+               <UncontrolledTextField label="Decoding" readOnly={false} Getvalue={(e) => this.getdecode(e)} />
             </Grid>
             <Grid item xs={12}>
                {this.state.select_no !== -1 ? <Typography variant="h6" gutterBottom>
                   {cal}
                </Typography> : null}
             </Grid>
-
-
             <Grid item xs={6}>
                <ButtonGroup
                   color="primary"
@@ -364,14 +350,50 @@ class Board extends React.Component {
                   </Button>
                </ButtonGroup>
             </Grid>
+            <Grid item xs={6}>
+               <ButtonGroup
+                  color="primary"
+                  size="large"
+                  fullWidth aria-label="full width outlined button group">
+                  <Button
+                     variant="contained"
+                     //onClick={() => this.init_Square()}
+                  >
+                     {detect}
+                  </Button>
+                  <Button
+                     variant="contained"
+                     //onClick={() => this.gen_ch()} //
+                  >
+                     {more}
+                  </Button>
+               </ButtonGroup>
+            </Grid>
          </Grid>
 
       );
    }
 }
+function UncontrolledTextField(props) {
+   return (
+      <TextField
+         id={props.label}
+         label={props.label}
+         value={props.value}
+         className="textField"
+         margin="normal"
+         onChange={(e) => {
+           props.Getvalue(e)
+         }}
+         InputProps={{
+            readOnly: props.readOnly,
+         }}
+         variant="outlined"
+      />
+   );
+}
 function TabPanel(props) {
    const { children, value, index, ...other } = props;
-
    return (
       <Typography
          component="div"
@@ -430,7 +452,7 @@ export default function ScrollableTabsButtonAuto() {
                   scrollButtons="auto"
                   aria-label="scrollable auto tabs example"
                >
-                  <Tab label="Experiment" {...a11yProps(0)} />
+                  <Tab label="Try It" {...a11yProps(0)} />
                   <Tab label="Concepts" {...a11yProps(1)} />
                </Tabs>
             </AppBar>
