@@ -47,7 +47,7 @@ class Board extends React.Component {
          code: jsonData[0].inf_code,
          able: able,
          select_no: -1,
-         decode:null
+         decode: null
       };
    }
    renderSquare_inf(i) {
@@ -97,9 +97,10 @@ class Board extends React.Component {
             squares[i].selected = 1;//选取的校验位置红
             var no = that.state.squares[i].check_no + 1;
             for (j = 0; j < that.state.length; j++) {
+               new_code[j] = squares[j].inf;
                if (i !== j)
                   squares[j].selected = 0; //其他恢复颜色
-               if (i !== j && j > i && (((j - i - 1) % (2 * no)) < no))
+               if (j >= i && (((j - i) % (2 * no)) < no))
                   squares[j].selected = squares[i].selected;
             }
          }
@@ -165,6 +166,7 @@ class Board extends React.Component {
       }
       return -1
    }
+   //生成校验位
    gen_ch() {
       var that = this;
       var new_length = that.get_huming_len(that.state.length) + that.state.length;
@@ -179,13 +181,10 @@ class Board extends React.Component {
          squares[i] = {
             inf: new_code[i],
             pos: new_code[i] === '?' ? ('S' + (i - j)) : ('H' + (j - 1)),
-            check_no: new_code[i] === '?' ? (i - j) : -1,
+            check_no: new_code[i] === '?' ? i : -1,
             selected: 0
          };
       }
-      //console.log(squares);
-
-
       this.setState({
          squares: squares,
          length: new_length,
@@ -193,21 +192,23 @@ class Board extends React.Component {
          able: [1, 0, 1]
       })
    }
+   //对某一位运算
    gen_cd_i(i) {
       var that = this;
       var no = that.state.squares[i].check_no + 1;
       var j;
       var value = -1;
-      for (j = 0; j < that.state.length; j++) {
-         if (i !== j && j > i && (((j - i - 1) % (2 * no)) < no)) {
+      for (j = i; j < that.state.length; j++) {
+         if ((((j - i) % (2 * no)) < no)) {
             if (value === -1)
-               value = that.state.squares[j].inf;
+               value = that.state.squares[j].inf === '?' ? 0 : that.state.squares[j].inf;
             else value ^= that.state.squares[j].inf;
             //console.log(this.state.squares[j])
          }
       }
       return value;
    }
+   //生成校验码
    gen_cd() {
       var that = this;
       let squares = that.state.squares.slice();
@@ -225,20 +226,73 @@ class Board extends React.Component {
          able: [1, 0, 0]
       });
    }
+   //获取decoding表中的值
    getdecode(e) {
       //e.preventDefault();
       this.setState({
          decode: e.target.value
       })
-      console.log(this.state.decode)
+
+   }
+   //检查同长度非空字符串的不同字符个数
+   getdifbit(str1, str2) {
+      var num = 0;
+      for (var i = 0; i < str1.toString().length; i++) {
+         num += str1[i] !== str2[i] ? 1 : 0;
+      }
+      return num;
+   }
+   //检纠错
+   detect() {
+      if (this.state.decode === null) {
+         alert("输入为空")
+         return;
+      }
+      if (this.state.decode.toString().length !== this.state.length) {
+         alert("码长不符，应为" + this.state.length + "位")
+         return;
+      }
+      if(this.getdifbit(this.state.decode,this.state.code)>1)
+      {
+         alert("不能检查两位及以上的错误")
+         return;
+      }
+      var that = this;
+      var no = that.get_huming_len(jsonData[0].inf_length);
+      var detect_code = Array(no);
+      var j, i;
+      var check_no
+      for (j = 0; j < no; j++) {
+         for (i = 0; i < that.state.length; i++) {
+            if (that.state.squares[i].check_no + 1 === (2 ** j))
+               break;
+         }
+         detect_code[j] = that.state.decode[i];
+         check_no = that.state.squares[i].check_no + 1;
+         for (var k = i + 1; k < that.state.length; k++) {
+            if ((((k - i) % (2 * check_no)) < check_no)) {
+               detect_code[j] ^= that.state.decode[k];
+            }
+         }
+      }
+      //detect_code.reverse()//生成的纠错码倒序
+      var num = this.bin2int(detect_code);
+      alert(num === 0 ? "没有错误" : ("第" + num + "位错误"));
+   }
+   bin2int(str) {
+      var num = 0;
+      for (var j = 0; j < str.toString().length; j++) {
+         num += str[j] === 1 ? (2 ** j) : 0;
+      }
+      return num;
    }
    render() {
       const status = 'Hamming_Code'
       const gen_ch = '生成校验位'
       const gen_cd = '生成校验码'
       const init_h = '重置'
-      const detect='检纠错'
-      const more='Learn More'
+      const detect = '检纠错'
+      const more = 'Learn More'
       const inf_code = [];
       const inf_pos = [];
       var i;
@@ -246,9 +300,9 @@ class Board extends React.Component {
       if (this.state.select_no !== -1) {
          var no = this.state.select_no + 1;
          i = this.get_check_pos(no - 1);
-         cal = this.state.squares[i].pos + " = " + this.state.squares[i + 1].pos;
-         for (var j = i + 2; j < this.state.length; j++) {
-            if (((j - i - 1) % (2 * no)) < no) {
+         cal = this.state.squares[i].pos + " = " + this.state.squares[i].pos;
+         for (var j = i + 1; j < this.state.length; j++) {
+            if (((j - i) % (2 * no)) < no) {
                cal += " XOR " + this.state.squares[j].pos;
             }
          }
@@ -357,13 +411,13 @@ class Board extends React.Component {
                   fullWidth aria-label="full width outlined button group">
                   <Button
                      variant="contained"
-                     //onClick={() => this.init_Square()}
+                     onClick={() => this.detect()}
                   >
                      {detect}
                   </Button>
                   <Button
                      variant="contained"
-                     //onClick={() => this.gen_ch()} //
+                  //onClick={() => this.gen_ch()} //
                   >
                      {more}
                   </Button>
@@ -383,7 +437,7 @@ function UncontrolledTextField(props) {
          className="textField"
          margin="normal"
          onChange={(e) => {
-           props.Getvalue(e)
+            props.Getvalue(e)
          }}
          InputProps={{
             readOnly: props.readOnly,
