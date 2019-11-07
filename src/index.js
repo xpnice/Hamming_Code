@@ -14,6 +14,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 const theme = createMuiTheme({
@@ -44,7 +45,8 @@ class Board extends React.Component {
          squares: squares,
          length: jsonData[0].inf_length,
          code: jsonData[0].inf_code,
-         able: able
+         able: able,
+         select_no: -1
       };
    }
    renderSquare_inf(i) {
@@ -97,7 +99,10 @@ class Board extends React.Component {
          }
 
       }
-      this.setState({ squares: squares });
+      this.setState({
+         squares: squares,
+         select_no: that.state.squares[i].check_no
+      });
       // console.log(this.state.squares)
    }
    handleClickAway() {
@@ -107,7 +112,10 @@ class Board extends React.Component {
       for (j = 0; j < that.state.length; j++) {
          squares[j].selected = 0; //其他恢复颜色
       }
-      this.setState({ squares: squares });
+      this.setState({
+         squares: squares,
+         select_no: -1
+      });
 
    }
    init_Square() {
@@ -125,7 +133,8 @@ class Board extends React.Component {
          squares: squares,
          length: jsonData[0].inf_length,
          code: jsonData[0].inf_code,
-         able: [1, 1, 0]
+         able: [1, 1, 0],
+         select_no: -1
       });
    }
    get_huming_len(i) {
@@ -140,6 +149,14 @@ class Board extends React.Component {
          return -1;
       }
 
+   }
+   get_check_pos(i) {
+      var j;
+      for (j = 0; j < this.state.length; j++) {
+         if (i === this.state.squares[j].check_no)
+            return j;
+      }
+      return -1
    }
    gen_ch() {
       var that = this;
@@ -165,7 +182,7 @@ class Board extends React.Component {
       this.setState({
          squares: squares,
          length: new_length,
-         code: new_code,
+         code: new_code.join(''),
          able: [1, 0, 1]
       })
    }
@@ -179,6 +196,7 @@ class Board extends React.Component {
             if (value === -1)
                value = that.state.squares[j].inf;
             else value ^= that.state.squares[j].inf;
+            //console.log(this.state.squares[j])
          }
       }
       return value;
@@ -187,13 +205,16 @@ class Board extends React.Component {
       var that = this;
       let squares = that.state.squares.slice();
       var i;
+      var new_code = Array(that.state.length);
       for (i = that.state.length - 1; i >= 0; i--) {
          if (that.state.squares[i].check_no !== -1) {
             squares[i].inf = this.gen_cd_i(i);
          }
+         new_code[i] = squares[i].inf;
       }
       this.setState({
          squares: squares,
+         code: new_code.join(''),
          able: [1, 0, 0]
       });
    }
@@ -204,7 +225,25 @@ class Board extends React.Component {
       const init_h = '重置'
       const inf_code = [];
       const inf_pos = [];
-      for (var i = 0; i < this.state.length; i++) {
+      //var gen_code = this.state.code;
+      //console.log(gen_code)
+      //console.log(gen_code.toString())
+      var i;
+      let cal = '';
+      if (this.state.select_no !== -1) {
+         var no = this.state.select_no + 1;
+         i = this.get_check_pos(no - 1);
+         // console.log(i);
+         cal = this.state.squares[i].pos + " = " + this.state.squares[i + 1].pos;
+         //console.log(no)
+         for (var j = i + 2; j < this.state.length; j++) {
+            if (((j - i - 1) % (2 * no)) < no) {
+               cal += " XOR " + this.state.squares[j].pos;
+               //     console.log(this.state.squares[j])
+            }
+         }
+      }
+      for (i = 0; i < this.state.length; i++) {
          inf_code.push(
             this.renderSquare_inf(i)
          )
@@ -249,7 +288,7 @@ class Board extends React.Component {
                />
             </Grid>
             <ClickAwayListener onClickAway={() => this.handleClickAway()}>
-               <Grid item xs={6}>
+               <Grid item xs={12}>
                   <ButtonGroup
                      color="secondary"
                      size="large"
@@ -265,7 +304,38 @@ class Board extends React.Component {
                </Grid>
             </ClickAwayListener>
             <Grid item xs={6}>
+               <TextField
+                  id="outlined-read-only-input"
+                  label="Ecoding"
+                  value={this.state.code}
+                  className="textField"
+                  margin="normal"
+                  InputProps={{
+                     readOnly: true,
+                  }}
+                  variant="outlined"
+               />
             </Grid>
+            <Grid item xs={6}>
+               <TextField
+                  id="outlined-input"
+                  label="Decoding"
+                  //defaultValue={gen_code}
+                  className="textField"
+                  margin="normal"
+                  InputProps={{
+                     readOnly: true,
+                  }}
+                  variant="outlined"
+               />
+            </Grid>
+            <Grid item xs={12}>
+               {this.state.select_no !== -1 ? <Typography variant="h6" gutterBottom>
+                  {cal}
+               </Typography> : null}
+            </Grid>
+
+
             <Grid item xs={6}>
                <ButtonGroup
                   color="primary"
