@@ -13,6 +13,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 const theme = createMuiTheme({
    palette: {
@@ -97,6 +99,16 @@ class Board extends React.Component {
       }
       this.setState({ squares: squares });
       // console.log(this.state.squares)
+   }
+   handleClickAway() {
+      var that = this;
+      var j;
+      let squares = that.state.squares.slice();
+      for (j = 0; j < that.state.length; j++) {
+         squares[j].selected = 0; //其他恢复颜色
+      }
+      this.setState({ squares: squares });
+
    }
    init_Square() {
       const squares = [];
@@ -236,20 +248,22 @@ class Board extends React.Component {
                //onClick={handleClick}
                />
             </Grid>
-            <Grid item xs={6}>
-               <ButtonGroup
-                  color="secondary"
-                  size="large"
-                  fullWidth aria-label="full width outlined button group">
-                  {inf_code}
-               </ButtonGroup>
-               <ButtonGroup
-                  color="secondary"
-                  size="large"
-                  fullWidth aria-label="full width outlined button group">
-                  {inf_pos}
-               </ButtonGroup>
-            </Grid>
+            <ClickAwayListener onClickAway={() => this.handleClickAway()}>
+               <Grid item xs={6}>
+                  <ButtonGroup
+                     color="secondary"
+                     size="large"
+                     fullWidth aria-label="full width outlined button group">
+                     {inf_code}
+                  </ButtonGroup>
+                  <ButtonGroup
+                     color="secondary"
+                     size="large"
+                     fullWidth aria-label="full width outlined button group">
+                     {inf_pos}
+                  </ButtonGroup>
+               </Grid>
+            </ClickAwayListener>
             <Grid item xs={6}>
             </Grid>
             <Grid item xs={6}>
@@ -260,7 +274,7 @@ class Board extends React.Component {
                   <Button
                      variant="contained"
                      disabled={!this.state.able[0]}
-                     onClick={() => this.init_Square()} //
+                     onClick={() => this.init_Square()}
                   >
                      {init_h}
                   </Button>
@@ -320,17 +334,19 @@ const useStyles = makeStyles(theme => ({
       flexGrow: 1,
       width: '100%',
       backgroundColor: theme.palette.background.paper,
+      //padding: theme.spacing(3, 2),
    },
+   pad: {
+      padding: theme.spacing(3, 2)
+   }
 }));
 
 export default function ScrollableTabsButtonAuto() {
    const classes = useStyles();
-   const [value, setValue] = React.useState(0);
-
+   const [value, setValue] = React.useState(0)
    const handleChange = (event, newValue) => {
       setValue(newValue);
    };
-
    return (
       <div className={classes.root}>
          <MuiThemeProvider theme={theme}>
@@ -355,8 +371,15 @@ export default function ScrollableTabsButtonAuto() {
             </MuiThemeProvider>
          </TabPanel>
          <TabPanel value={value} index={1}>
-            WHAT IS HAMMING CODE
-       </TabPanel>
+            <Paper className={classes.pad}>
+               <Typography variant="h5" component="h3">
+                  What is Hamming Code?
+       </Typography>
+               <Typography component="p">
+                  I have fucking no idea.
+       </Typography>
+            </Paper>
+         </TabPanel>
       </div>
    );
 }
