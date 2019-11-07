@@ -3,6 +3,8 @@
 
 The project is a group assignment on Computer Network, aimed to explain how hamming code works on network aspects to amateurs. It is coded by a trio from Tongji University, China. Feel free to contact us if any issues occur.
 
+## Try It Out!
+Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick view of our project!
 ## Befor You Start
 Make sure you have a recent version of [Node.js](https://nodejs.org/en/) installed.
 
