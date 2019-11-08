@@ -17,6 +17,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 const theme = createMuiTheme({
    palette: {
       primary: {
@@ -252,8 +253,7 @@ class Board extends React.Component {
          alert("码长不符，应为" + this.state.length + "位")
          return;
       }
-      if(this.getdifbit(this.state.decode,this.state.code)>1)
-      {
+      if (this.getdifbit(this.state.decode, this.state.code) > 1) {
          alert("不能检查两位及以上的错误")
          return;
       }
@@ -295,6 +295,7 @@ class Board extends React.Component {
       const more = 'Learn More'
       const inf_code = [];
       const inf_pos = [];
+      const tips = "Tips:" + (this.state.able[1] ? "点击信息码可以改变被点击位的值" : "点击校验位可以查看运算方式");
       var i;
       let cal = '';
       if (this.state.select_no !== -1) {
@@ -317,37 +318,25 @@ class Board extends React.Component {
       }
       return (
          <Grid container spacing={3}>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
                <Typography variant="h4" gutterBottom>
                   {status}
                </Typography>
             </Grid>
+            <Grid item xs={3}>
+            <Button fullWidth variant="contained">
+            {tips}
+                  </Button>
+            </Grid>
+            <Grid item xs={2}/>
             <Grid item xs={1} >
-               <Chip
-                  variant="outlined"
-                  size="medium"
-                  avatar={<Avatar>F</Avatar>}
-                  label="冯惠"
-               //onClick={handleClick}
-               />
+              <VariableWidth name="冯惠" letter ="F" id="1753495"/>
             </Grid>
             <Grid item xs={1} >
-               <Chip
-                  variant="outlined"
-                  size="medium"
-                  avatar={<Avatar>L</Avatar>}
-                  label="李沿澎"
-               //onClick={handleClick}
-               />
+            <VariableWidth name="李沿澎" letter ="L" id="1754026"/>
             </Grid>
             <Grid item xs={1} >
-               <Chip
-                  variant="outlined"
-                  size="medium"
-                  avatar={<Avatar>T</Avatar>}
-                  label="田庚轩"
-               //onClick={handleClick}
-               />
+            <VariableWidth name="田庚轩" letter ="T" id="1754080"/>
             </Grid>
             <ClickAwayListener onClickAway={() => this.handleClickAway()}>
                <Grid item xs={12}>
@@ -423,10 +412,31 @@ class Board extends React.Component {
                   </Button>
                </ButtonGroup>
             </Grid>
+            <Grid item xs={12}>
+               <Typography variant="h6" gutterBottom>
+
+               </Typography>
+            </Grid>
          </Grid>
 
       );
    }
+}
+function VariableWidth(props) {
+   const classes = useStyles();
+   return (
+      <div>
+         <Tooltip title={props.id} classes={{ tooltip: classes.customWidth }}>
+         <Chip
+                  variant="outlined"
+                  size="medium"
+                  avatar={<Avatar>{props.letter}</Avatar>}
+                  label={props.name}
+               //onClick={handleClick}
+               />
+         </Tooltip>
+      </div>
+   );
 }
 function UncontrolledTextField(props) {
    return (
@@ -484,6 +494,15 @@ const useStyles = makeStyles(theme => ({
    },
    pad: {
       padding: theme.spacing(3, 2)
+   },
+   button: {
+      margin: theme.spacing(1),
+   },
+   customWidth: {
+      maxWidth: 500,
+   },
+   noMaxWidth: {
+      maxWidth: 'none',
    }
 }));
 
