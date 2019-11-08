@@ -1,7 +1,7 @@
 # Hamming_Code
 ![](https://img.shields.io/badge/npm-v6.9.0-ff69b4) ![](https://img.shields.io/badge/node.js_support-v10.16.3-ff69b4) ![](https://img.shields.io/badge/JavaScript_library-React-blue) ![](https://img.shields.io/badge/React_components-Material--UI-blue) ![](https://img.shields.io/badge/build-passing-brightgreen)
 
-The project is a group assignment on Computer Network, aimed to explain how hamming code works on network aspects to amateurs. It is coded by a trio from Tongji University, China. Feel free to contact us if any issues occur.
+This project is a group assignment on Computer Network, aimed to explain how hamming code works on network aspects to amateurs. It is coded by a trio from Tongji University, China. Feel free to contact us if any issues occur.
 
 ## Try It Out!
 Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick view of our project!
