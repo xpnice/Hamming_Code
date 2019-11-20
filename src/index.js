@@ -323,12 +323,12 @@ class Board extends React.Component {
                   {status}
                </Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
             <Button fullWidth variant="contained">
             {tips}
                   </Button>
             </Grid>
-            <Grid item xs={2}/>
+            <Grid item xs={1}/>
             <Grid item xs={1} >
               <VariableWidth name="冯惠" letter ="F" id="1753495"/>
             </Grid>

@@ -1,5 +1,5 @@
 # Hamming_Code
-![](https://img.shields.io/badge/npm-v6.9.0-ff69b4) ![](https://img.shields.io/badge/node.js_support-v10.16.3-ff69b4) ![](https://img.shields.io/badge/JavaScript_library-React-blue) ![](https://img.shields.io/badge/React_components-Material--UI-blue) ![](https://img.shields.io/badge/build-passing-brightgreen)
+![](https://img.shields.io/badge/yarn-v1.19.1-ff69b4) ![](https://img.shields.io/badge/node.js_support-v10.16.3-ff69b4) ![](https://img.shields.io/badge/JavaScript_library-React-blue) ![](https://img.shields.io/badge/React_components-Material--UI-blue) ![](https://img.shields.io/badge/build-passing-brightgreen)
 
 This project is a group assignment on Computer Network, aimed to explain how hamming code works on network aspects to amateurs. It is coded by a trio from Tongji University, China. Feel free to contact us if any issues occur.
 
@@ -24,18 +24,23 @@ See [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html#crea
 ### 2.Clone The Project
 After the previous step, you make a new directory "my-app" as your project directory. Overlay all the files and directories other than node_modules by the clone.
 
+### 3.Install Yarn
+```Bash
+yarn 
+```
+
 ### 3.Install Material-UI
 ```Bash
-#with npm 
-npm install @material-ui/core
-#with yarn
+#with npm, but part of the code may not be compiled
+npm install @material-ui/core 
+#with yarn, recomonded
 yarn add @material-ui/core
 ```
 
 ### 4.Enjoy
 
 ```Bash
-npm start
+yarn start
 ```
 Runs the app in the development mode.Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
