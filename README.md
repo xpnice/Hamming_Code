@@ -28,6 +28,7 @@ After the previous step, you make a new directory "my-app" as your project direc
 ```Bash
 yarn 
 ```
+Follow the steps on [install yarn](https://yarnpkg.com/zh-Hans/docs/install#windows-stable) to install yarn.
 
 ### 3.Install Material-UI
 ```Bash
