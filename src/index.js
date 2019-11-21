@@ -18,6 +18,7 @@ import TextField from '@material-ui/core/TextField';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import Introduction from './intro'
 const theme = createMuiTheme({
    palette: {
       primary: {
@@ -525,8 +526,9 @@ export default function ScrollableTabsButtonAuto() {
                   scrollButtons="auto"
                   aria-label="scrollable auto tabs example"
                >
-                  <Tab label="Try It" {...a11yProps(0)} />
-                  <Tab label="Concepts" {...a11yProps(1)} />
+                  <Tab label="Try it" {...a11yProps(0)} />
+                  <Tab label="Introduction" {...a11yProps(1)} />
+                  <Tab label="Concepts" {...a11yProps(2)} />
                </Tabs>
             </AppBar>
          </MuiThemeProvider>
@@ -536,6 +538,11 @@ export default function ScrollableTabsButtonAuto() {
             </MuiThemeProvider>
          </TabPanel>
          <TabPanel value={value} index={1}>
+            <MuiThemeProvider theme={theme}>
+               <Introduction />
+            </MuiThemeProvider>
+         </TabPanel>
+         <TabPanel value={value} index={2}>
             <Paper className={classes.pad}>
                <Typography variant="h5" component="h3">
                   What is Hamming Code?

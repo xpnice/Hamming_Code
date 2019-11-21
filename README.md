@@ -28,7 +28,7 @@ After the previous step, you make a new directory "my-app" as your project direc
 ```Bash
 yarn 
 ```
-Follow the steps on [install yarn](https://yarnpkg.com/zh-Hans/docs/install#windows-stable) to install yarn.
+Follow the steps to [install yarn](https://yarnpkg.com/zh-Hans/docs/install#windows-stable).
 
 ### 3.Install Material-UI
 ```Bash
@@ -37,8 +37,11 @@ npm install @material-ui/core
 #with yarn, recomonded
 yarn add @material-ui/core
 ```
-
-### 4.Enjoy
+### 4.Install React-flight
+```Bash
+yarn add react-flight
+```
+### 5.Enjoy
 
 ```Bash
 yarn start
