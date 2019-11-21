@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/Hamming_Code/static/css/main.818a5cc0.chunk.css",
+    "main.css": "/Hamming_Code/static/css/main.360040d6.chunk.css",
     "main.js": "/Hamming_Code/static/js/main.91ee6ed7.chunk.js",
     "main.js.map": "/Hamming_Code/static/js/main.91ee6ed7.chunk.js.map",
     "runtime-main.js": "/Hamming_Code/static/js/runtime-main.b0347492.js",
@@ -9,16 +9,16 @@
     "static/js/2.b91560a2.chunk.js": "/Hamming_Code/static/js/2.b91560a2.chunk.js",
     "static/js/2.b91560a2.chunk.js.map": "/Hamming_Code/static/js/2.b91560a2.chunk.js.map",
     "index.html": "/Hamming_Code/index.html",
-    "precache-manifest.68f9bac0486a1c5ef17020b0eb941e04.js": "/Hamming_Code/precache-manifest.68f9bac0486a1c5ef17020b0eb941e04.js",
+    "precache-manifest.3e8d4824e352c1e4850abbd863b2a84a.js": "/Hamming_Code/precache-manifest.3e8d4824e352c1e4850abbd863b2a84a.js",
     "service-worker.js": "/Hamming_Code/service-worker.js",
     "static/css/2.75adca66.chunk.css.map": "/Hamming_Code/static/css/2.75adca66.chunk.css.map",
-    "static/css/main.818a5cc0.chunk.css.map": "/Hamming_Code/static/css/main.818a5cc0.chunk.css.map"
+    "static/css/main.360040d6.chunk.css.map": "/Hamming_Code/static/css/main.360040d6.chunk.css.map"
   },
   "entrypoints": [
     "static/js/runtime-main.b0347492.js",
     "static/css/2.75adca66.chunk.css",
     "static/js/2.b91560a2.chunk.js",
-    "static/css/main.818a5cc0.chunk.css",
+    "static/css/main.360040d6.chunk.css",
     "static/js/main.91ee6ed7.chunk.js"
   ]
 }

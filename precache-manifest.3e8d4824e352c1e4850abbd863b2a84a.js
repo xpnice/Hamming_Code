@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "887ea2e003af62512b1beff9eca3bec2",
+    "revision": "a0cd96de86e53f80bbd18820973fe54c",
     "url": "/Hamming_Code/index.html"
   },
   {
@@ -8,15 +8,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Hamming_Code/static/css/2.75adca66.chunk.css"
   },
   {
-    "revision": "de7343674f285d2eec1d",
-    "url": "/Hamming_Code/static/css/main.818a5cc0.chunk.css"
+    "revision": "c9bd0c9bb06d6a7e00cc",
+    "url": "/Hamming_Code/static/css/main.360040d6.chunk.css"
   },
   {
     "revision": "c3d994dd1202b19bc669",
     "url": "/Hamming_Code/static/js/2.b91560a2.chunk.js"
   },
   {
-    "revision": "de7343674f285d2eec1d",
+    "revision": "c9bd0c9bb06d6a7e00cc",
     "url": "/Hamming_Code/static/js/main.91ee6ed7.chunk.js"
   },
   {
