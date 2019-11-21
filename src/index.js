@@ -205,7 +205,7 @@ class Board extends React.Component {
          squares[i] = {
             inf: new_code[i],
             pos: new_code[i] === '?' ? ('S' + (i - j)) : ('H' + (j - 1)),
-            check_no: new_code[i] === '?' ? i : -1,
+            check_no: new_code[i] === '?' ? i : -1,//校验位的位置（从0开始）
             selected: 0
          };
       }
