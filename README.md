@@ -37,10 +37,12 @@ npm install @material-ui/core
 #with yarn, recomonded
 yarn add @material-ui/core
 ```
-### 4.Install React-flight
+### 4.Install React-Motion
 ```Bash
-yarn add react-flight
+yarn add rc-tween-one
+yarn add rc-banner-anim
 ```
+View more on [React-Motion](https://motion.ant.design/api/tween-one-cn)
 ### 5.Enjoy
 
 ```Bash

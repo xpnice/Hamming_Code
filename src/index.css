@@ -71,5 +71,105 @@ body {
     margin-left: 20px;
     margin-right : 20px;
     width: 100%;
+    
   }
+  .code-box-shape {
+    position: relative;
+    margin:auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    background:#ffd5d5;
+    float:left;
+    margin-left:10px
+  }
+  .box-queue{
+    margin:auto;
+position: relative;
+top:100px;
+width:80%;
+left:10%;
+  }
+  .banner-user{
+  height: 460px;
+}
+.banner-user-elem{
+  text-align: center;
+  color: #45454d;
+  position: relative;
+  overflow: hidden;
+}
+.banner-user-elem .banner-user-title{
+  font-size: 32px;
+  top: 5%;
+}
+.banner-user-elem .banner-user-text{
+  margin:relative;
+  top: 8%;
+width: 60%;
+left:20%;
+}
+.banner-anim-elem .bg{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.fade-enter {
+  opacity: 0;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  animation-play-state: paused;
+}
+
+.fade-appear {
+  opacity: 0;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  animation-play-state: paused;
+}
+
+.fade-leave {
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  animation-play-state: paused;
+}
+
+.fade-enter.fade-enter-active {
+  animation-name: fadeIn;
+  animation-play-state: running;
+}
+
+.fade-appear.fade-appear-active {
+  animation-name: fadeIn;
+  animation-play-state: running;
+}
+
+.fade-leave.fade-leave-active {
+  animation-name: fadeOut;
+  animation-play-state: running;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
   

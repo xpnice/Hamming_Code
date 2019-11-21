@@ -1,33 +1,40 @@
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Grid from '@material-ui/core/Grid';
-import jsonData from "./config.json";
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
+import Introduction from './intro';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
+import jsonData from "./config.json";
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Chip from '@material-ui/core/Chip';
+import Tabs from '@material-ui/core/Tabs';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
-import Introduction from './intro'
 const theme = createMuiTheme({
    palette: {
       primary: {
-         main: "#00e676"
+         main: "#ffd5d5"
       },
       secondary: {
-         main: "#00e676"
+         main: "#fff1e9"
       },
-   },
+      default: {
+         main: "#f9f6f2"
+      },
+      disabled: {
+         main: "#f9f6f2"
+      }
+   }
+   
 });
 class Board extends React.Component {
    constructor(props) {
@@ -58,7 +65,7 @@ class Board extends React.Component {
             <Button
                key={'inf' + i}
                variant="contained"
-               color={this.state.squares[i].selected === 0 ? "default" : "secondary"}
+               color={this.state.squares[i].selected === 0 ? "secondary" : "primary"}
                onClick={() => this.handleClick(i)}
             >
                {this.state.squares[i].inf}
@@ -71,12 +78,27 @@ class Board extends React.Component {
             <Button
                key={'pos' + i}
                variant="contained"
-               color={this.state.squares[i].selected === 0 ? "default" : "secondary"}
+               color={this.state.squares[i].selected === 0 ? "secondary" : "primary"}
                onClick={() => this.handleClick(i)}
             >
                {this.state.squares[i].pos}
             </Button>
          );
+   }
+   renderSquare_dpos(i) {
+      var key;
+      if (i < this.state.length)
+         key = 'D' + i
+      return (
+         <Button
+            key={'dpos' + i}
+            variant="contained"
+            color={this.state.squares[i].selected === 0 ? "secondary" : "primary"}
+            onClick={() => this.handleClick(i)}
+         >
+            {key}
+         </Button>
+      );
    }
    handleClick(i) { //点击触发，取反
       var that = this;
@@ -296,6 +318,7 @@ class Board extends React.Component {
       const more = 'Learn More'
       const inf_code = [];
       const inf_pos = [];
+      const inf_dpos = [];
       const tips = "Tips:" + (this.state.able[1] ? "点击信息码可以改变被点击位的值" : "点击校验位可以查看运算方式");
       var i;
       let cal = '';
@@ -316,6 +339,9 @@ class Board extends React.Component {
          inf_pos.push(
             this.renderSquare_pos(i)
          )
+         inf_dpos.push(
+            this.renderSquare_dpos(i)
+         )
       }
       return (
          <Grid container spacing={3}>
@@ -325,19 +351,19 @@ class Board extends React.Component {
                </Typography>
             </Grid>
             <Grid item xs={4}>
-            <Button fullWidth variant="contained">
-            {tips}
-                  </Button>
+               <Button color="primary" fullWidth variant="contained">
+                  {tips}
+               </Button>
             </Grid>
-            <Grid item xs={1}/>
+            <Grid item xs={1} />
             <Grid item xs={1} >
-              <VariableWidth name="冯惠" letter ="F" id="1753495"/>
-            </Grid>
-            <Grid item xs={1} >
-            <VariableWidth name="李沿澎" letter ="L" id="1754026"/>
+               <VariableWidth name="冯惠" letter="F" id="1753495" />
             </Grid>
             <Grid item xs={1} >
-            <VariableWidth name="田庚轩" letter ="T" id="1754080"/>
+               <VariableWidth name="李沿澎" letter="L" id="1754026" />
+            </Grid>
+            <Grid item xs={1} >
+               <VariableWidth name="田庚轩" letter="T" id="1754080" />
             </Grid>
             <ClickAwayListener onClickAway={() => this.handleClickAway()}>
                <Grid item xs={12}>
@@ -352,6 +378,12 @@ class Board extends React.Component {
                      size="large"
                      fullWidth aria-label="full width outlined button group">
                      {inf_pos}
+                  </ButtonGroup>
+                  <ButtonGroup
+                     color="secondary"
+                     size="large"
+                     fullWidth aria-label="full width outlined button group">
+                     {inf_dpos}
                   </ButtonGroup>
                </Grid>
             </ClickAwayListener>
@@ -413,11 +445,7 @@ class Board extends React.Component {
                   </Button>
                </ButtonGroup>
             </Grid>
-            <Grid item xs={12}>
-               <Typography variant="h6" gutterBottom>
 
-               </Typography>
-            </Grid>
          </Grid>
 
       );
@@ -428,13 +456,13 @@ function VariableWidth(props) {
    return (
       <div>
          <Tooltip title={props.id} classes={{ tooltip: classes.customWidth }}>
-         <Chip
-                  variant="outlined"
-                  size="medium"
-                  avatar={<Avatar>{props.letter}</Avatar>}
-                  label={props.name}
-               //onClick={handleClick}
-               />
+            <Chip
+               variant="outlined"
+               size="medium"
+               avatar={<Avatar>{props.letter}</Avatar>}
+               label={props.name}
+            //onClick={handleClick}
+            />
          </Tooltip>
       </div>
    );
@@ -505,6 +533,7 @@ const useStyles = makeStyles(theme => ({
    noMaxWidth: {
       maxWidth: 'none',
    }
+   
 }));
 
 export default function ScrollableTabsButtonAuto() {
@@ -557,5 +586,6 @@ export default function ScrollableTabsButtonAuto() {
 }
 ReactDOM.render(
    <ScrollableTabsButtonAuto />,
+
    document.getElementById('root')
 );
