@@ -74,23 +74,22 @@ body {
     
   }
   .code-box-shape {
-    position: relative;
     margin:absolute;
     width: 50px;
     height: 50px;
     border-radius: 4px;
     background:#ffd5d5;
     float:left;
-    margin-left:10px;
     display: inline-flex;
     justify-content:center;
+    margin-left:10px;
   }
   .box-queue{
-    margin:auto;
-position: relative;
-top:15%;
-display: flex;
-justify-content:center;
+    margin:relative;
+    position: relative;
+    top:15%;
+    display: flex;
+    justify-content:center;
   }
   .banner-user{
     margin:relative;

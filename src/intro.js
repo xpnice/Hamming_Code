@@ -1,3 +1,4 @@
+import './index.css';
 import React from 'react'
 import TweenOne from 'rc-tween-one';
 import BannerAnim, { Element } from 'rc-banner-anim';
@@ -35,7 +36,7 @@ class Introduction extends React.Component {
    renderSquare_inf(i) {
       if (i < this.state.i_len)
          return (
-            <TweenOne className="code-box-shape">
+            <TweenOne className="code-box-shape"style={{marginLeft:'10px'}}>
                <div style={{ color: '#45454d' }}>H{i}</div>
             </TweenOne>
          );
@@ -57,7 +58,7 @@ class Introduction extends React.Component {
                   type: "from"
                }}
                paused={false}
-               style={{ background: '#fc7fb2' }}
+               style={{ background: '#fc7fb2',marginLeft:'10px' }}
                className="code-box-shape"
             >
                <div style={{ color: '#45454d' }}>S{i}</div>
@@ -80,7 +81,7 @@ class Introduction extends React.Component {
                   delay: 3000,
                }}
                paused={false}
-               style={{ background: this.state.squares[i].is_s===true ? '#fc7fb2' : null }}
+               style={{ background: this.state.squares[i].is_s===true ? '#fc7fb2' : null ,marginLeft:'10px'}}
                className="code-box-shape"
             >
                <div style={{ color: '#45454d' }}>{this.state.squares[i].name}</div>
@@ -201,7 +202,7 @@ class Introduction extends React.Component {
                >
                   传输总位数n——共存在n+1种不同的情况（任意m个信息码元其中一个发生错误，任意r个检验位其中一个发生错误，无错）为了可以表示每种情况，以便正确的纠错，所以需满足2<sup>r</sup> >= n+1=m+r+1
                   </TweenOne>
-               <div className="box-queue"style={{ margin: 'relative', top: '25%' }}>
+               <div className="box-queue"style={{top: '25%' }}>
                   {inf_code}
                   {inf_s}
                </div>
