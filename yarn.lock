@@ -2560,6 +2560,11 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+classnames@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.npm.taobao.org/classnames/download/classnames-2.2.6.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fclassnames%2Fdownload%2Fclassnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
+  integrity sha1-Q5Nb/90pHzJtrQogUwmzjQD2UM4=
+
 clean-css@4.2.x:
   version "4.2.1"
   resolved "https://registry.npm.taobao.org/clean-css/download/clean-css-4.2.1.tgz#2d411ef76b8569b6d0c84068dabe85b0aa5e5c17"
@@ -8304,7 +8309,16 @@ rc-banner-anim@^2.4.2:
     style-utils "~0.2.0"
     tween-functions "1.x"
 
-rc-tween-one@^2.4.0, rc-tween-one@^2.6.5:
+rc-texty@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npm.taobao.org/rc-texty/download/rc-texty-0.2.0.tgz#79af813523bfc314ba74af2bc086cda8b3296458"
+  integrity sha1-ea+BNSO/wxS6dK8rwIbNqLMpZFg=
+  dependencies:
+    babel-runtime "6.x"
+    classnames "^2.2.6"
+    rc-tween-one "^2.2.0"
+
+rc-tween-one@^2.2.0, rc-tween-one@^2.4.0, rc-tween-one@^2.6.5:
   version "2.6.5"
   resolved "https://registry.npm.taobao.org/rc-tween-one/download/rc-tween-one-2.6.5.tgz#b4c21d18df0ffae38bc6965daf3b73d72df0c584"
   integrity sha1-tMIdGN8P+uOLxpZdrztz1y3wxYQ=

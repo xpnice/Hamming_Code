@@ -74,9 +74,20 @@ body {
     
   }
   .code-box-shape {
-    margin:absolute;
+    margin:relative;
     width: 50px;
     height: 50px;
+    border-radius: 4px;
+    background:#ffd5d5;
+    float:left;
+    display: inline-flex;
+    justify-content:center;
+    margin-left:10px;
+  }
+  .code-box-cul {
+    margin:relative;
+    width: 50px;
+    height: 20px;
     border-radius: 4px;
     background:#ffd5d5;
     float:left;
@@ -87,13 +98,13 @@ body {
   .box-queue{
     margin:relative;
     position: relative;
-    top:15%;
+    top:2%;
     display: flex;
     justify-content:center;
   }
   .banner-user{
     margin:relative;
-  height: 460px;
+  height: 450px;
 }
 .banner-user-elem{
   text-align: center;
