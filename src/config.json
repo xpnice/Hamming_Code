@@ -2,8 +2,8 @@
 {
     "inf_length":5,
     "inf_code":"11110",
-    "show_length":5,
-    "show_code":"10110"
+    "show_length":4,
+    "show_code":"1011"
 
 }
 ]

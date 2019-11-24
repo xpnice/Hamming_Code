@@ -9,7 +9,26 @@ import 'rc-texty/assets/index.css';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import TextField from '@material-ui/core/TextField';
 const BgElement = Element.BgElement;
+function UncontrolledTextField(props) {
+   return (
+      <TextField
+         id={props.label}
+         label={props.label}
+         value={props.value}
+         className="textField"
+         margin="normal"
+         onChange={(e) => {
+            props.Getvalue(e)
+         }}
+         InputProps={{
+            readOnly: props.readOnly,
+         }}
+         variant="outlined"
+      />
+   );
+}
 class Introduction extends React.Component {
    constructor(props) {
       super(props);
@@ -21,6 +40,7 @@ class Introduction extends React.Component {
       var s_len = this.get_huming_len(jsonData[0].show_length);
       var new_length = jsonData[0].show_length + s_len;
       var new_code = Array(new_length);
+      var decode = Array(new_length);
       //var div=Array(new_length);
       var show_check = Array(s_len);
       for (i = 0; i < s_len; i++) {
@@ -28,6 +48,7 @@ class Introduction extends React.Component {
       }
       for (i = 0; i < new_length; i++) {
          div[i] = Array(0);
+         decode[i] = '?'
          if (i === 0 || i === 1 || i === 3 || i === 7) {
             new_code[i] = '?';
             for (k = 0; k < jsonData[0].show_length; k++) {
@@ -58,14 +79,17 @@ class Introduction extends React.Component {
          s_len: s_len,
          len: new_length,
          code: new_code.join(''),
+         final_code: new_code.join(''),
          show_check: show_check,
-         check_mode: -1
+         check_mode: -1,
+         decode: decode,
+         right_len: false
       };
    }
    renderSquare_inf(i) {
       if (i < this.state.i_len)
          return (
-            <TweenOne className="code-box-shape" style={{ marginLeft: '10px' }} onClick={() => console.log("hi")}>
+            <TweenOne className="code-box-shape" style={{ marginLeft: '10px' }}>
                <div style={{ color: '#45454d' }}>H{i}</div>
             </TweenOne>
          );
@@ -179,12 +203,12 @@ class Introduction extends React.Component {
                   },
                   {//第二步把校验位都移上去
                      x: 0,
-                     y: this.state.check_mode !== -1 ? ((i === k && this.state.squares[k].div.indexOf(this.state.check_mode) !== -1) ? y : 0) : (k === 0 ? y : ((this.state.squares[k].div.indexOf(i) !== -1 || i === k) ? y : 0)),
+                     y: this.state.check_mode > -1 ? ((i === k && this.state.squares[k].div.indexOf(this.state.check_mode) !== -1) ? y : 0) : (k === 0 ? y : ((this.state.squares[k].div.indexOf(i) !== -1 || i === k) ? y : 0)),
                      duration: duration,
                      delay: 0,
                   },
                   {
-                     x: this.state.check_mode !== -1 ? (this.state.squares[k].div.indexOf(this.state.check_mode) !== -1 && i === k ? (this.state.squares[k].div[this.state.squares[k].div.indexOf(this.state.check_mode)] - i) * 60 : 0) : 0
+                     x: this.state.check_mode > -1 ? (this.state.squares[k].div.indexOf(this.state.check_mode) !== -1 && i === k ? (this.state.squares[k].div[this.state.squares[k].div.indexOf(this.state.check_mode)] - i) * 60 : 0) : 0
                   }]}
                paused={false}
                style={{ background: this.state.squares[i].is_s === true ? '#fc7fb2' : null, marginLeft: '10px' }
@@ -207,6 +231,22 @@ class Introduction extends React.Component {
          </TweenOne>
       );
    }
+   renderSquare_final(i) {
+      var content = 'D' + (i + 1) + '\n' + this.state.squares[i].inf
+      return (
+         <TweenOne className="code-box-shape" style={{ marginLeft: '10px' }}>
+            <div style={{ color: '#45454d', whiteSpace: 'pre-wrap' }}>{content}</div>
+         </TweenOne>
+      );
+   }
+   renderSquare_detect(i) {
+      var content = 'D' + (i + 1) + '\n' + this.state.decode[i]
+      return (
+         <TweenOne className="code-box-shape" style={{ marginLeft: '10px' }}>
+            <div style={{ color: '#45454d', whiteSpace: 'pre-wrap' }}>{content}</div>
+         </TweenOne>
+      );
+   }
    get_huming_len(i) {
       if (i === 1)
          return 2;
@@ -225,8 +265,8 @@ class Introduction extends React.Component {
       for (k = 0; k < this.state.s_len; k++) {
          show_check[k] = (k === i && ((2 ** i - 1) !== this.state.check_mode)) ? true : false;
       }
-      k = (2 ** i - 1) === this.state.check_mode ? -1 : 2 ** i - 1;
-      this.gen_cd_i(2**i-1);
+      k = (2 ** i - 1) === this.state.check_mode ? -2 : 2 ** i - 1;
+      this.gen_cd_i(2 ** i - 1);
       this.setState({
          show_check: show_check,
          check_mode: k
@@ -244,11 +284,113 @@ class Introduction extends React.Component {
          </Button>
       )
    }
+   reset_mot() {
+      let show_check = this.state.show_check.slice();
+      var k;
+      for (k = 0; k < this.state.s_len; k++) {
+         show_check[k] = false;
+      }
+      var i;
+      var new_code = Array(this.state.len);
+      let squares = this.state.squares.slice();
+      for (i = 0; i < this.state.len; i++) {
+         if (this.state.squares[i].is_s) {
+            squares[i].inf = '?';
+         }
+         new_code[i] = squares[i].inf;
+      }
+      this.setState({
+         squares: squares,
+         code: new_code.join(''),
+         show_check: show_check,
+         check_mode: -1
+      })
+   }
    get_s_init(i) {
       if (i === 0) return 0
       if (i === 1) return 1
       if (i === 3) return 2
       if (i === 7) return 3
+   }
+   //获取decoding表中的值
+   get_decode(e) {
+      //e.preventDefault();
+      var str = Array(this.state.len)
+      var right_len = false
+      var i;
+      if (this.state.len === e.target.value.length)
+         right_len = true
+      for (i = 0; i < this.state.len; i++)
+         if (i < e.target.value.length)
+            str[i] = e.target.value[i]
+         else
+            str[i] = '?'
+      this.setState({
+         decode: str,
+         right_len: right_len
+      })
+   }
+   check_decode() {
+      for (var i = 0; i < this.state.len; i++)
+         if (this.state.decode[i] !== '1' && this.state.decode[i] !== '0')
+            return false;
+      return true;
+   }
+   getdifbit(str1, str2) {
+      var num = 0;
+      for (var i = 0; i < str1.toString().length; i++) {
+         num += str1[i] !== str2[i] ? 1 : 0;
+      }
+      return num;
+   }
+   //检纠错
+   detect() {
+      if (!this.state.right_len) {
+         alert("码长不符，应为" + this.state.len + "位")
+         return;
+      }
+      if (!this.check_decode()) {
+         alert("出现非二进制字符")
+         return;
+      }
+      if (this.getdifbit(this.state.decode, this.state.code) > 1) {
+         alert("不能检查两位及以上的错误")
+         return;
+      }
+      var detect_code = Array(this.state.s_len);
+      var j = 0;
+      for (var i = 0; i < this.state.len; i++) {
+         if (this.state.squares[i].is_s) {
+            detect_code[j++] = this.detect_i(i);
+         }
+      }
+      //detect_code.reverse()//生成的纠错码倒序
+      console.log(detect_code)
+      var num = this.bin2int(detect_code);
+      alert(num === 0 ? "没有错误" : ("第" + num + "位D" + num + "错误"));
+   }
+   bin2int(str) {
+      var num = 0;
+      for (var j = 0; j < str.toString().length; j++) {
+         num += str[j] === 1 ? (2 ** j) : 0;
+      }
+      return num;
+   }
+   detect_i(k) {
+      var inf = [];
+      var i;
+      for (i in this.state.squares[k].div)
+         inf.push(this.state.decode[this.state.squares[k].div[i]])
+      var result = this.state.squares[k].inf;
+      console.log(k)
+      console.log(result)
+      console.log(this.state.squares[k].div)
+      console.log(inf)
+      for (i = 0; i < inf.length; i++) {
+         result ^= inf[i];
+      }
+      return result;
+
    }
    gen_cd_i(k) {
       var inf = [];
@@ -286,21 +428,25 @@ class Introduction extends React.Component {
          code: new_code.join(''),
       });
    }
+
    render() {
       var i;
-      const inf_code = [];
-      const inf_s = [];
-      const inf_cs = [];
-      const inf_mot = [];
-      const inf_col = [];
-      const buttons = [];
+      const inf_code = [];//动画1信息码
+      const inf_s = [];//动画1校验码
+      const inf_cs = [];//动画2
+      const inf_mot = [];//动画3主模块
+      const inf_col = [];//动画3边栏
+      const buttons = [];//动画3按钮组
+      const inf_final = [];//动画4最终汉明码
+      const inf_detect = []//动画5待纠错码
       var j = 0;
+      var detect_tip = "海明码的纠错过程与计算过程非常类似，只需要把待检查的码根据之前的方法生成r位纠错码，\nr位纠错码所代表的二进制数就是错误的位数。"
       var tip = "现在，我们需要通过已有的信息码来求解校验码。\n对于每一个信息位Hi，将i拆解成几个二的幂次减一的正整数，如3=1+2，7=1+2+4，等式左端为信息码的位数，而等式右端即为校验码的位数，如H2对应S0和S1。\n对于每一位的对应关系究竟是如何的可以通过右侧的动画观察：\n每一横行都对应一个信息位，对于你输入的"
       tip += jsonData[0].show_code + '有' + jsonData[0].show_length + '位,因而有' + jsonData[0].show_length + '行，\n每一行左侧的算式向你展示了特定位信息码对应的校验码的位数。\n点击下方的按钮来计算校验码吧！';
-      if (this.state.check_mode !== -1) {
+      if (this.state.check_mode > -1) {
          tip = "现在你可以看到校验位S" + this.get_s_init(this.state.check_mode) + '对应的列下面排列了几个信息位小方块\nD'
          console.log(this.state.squares)
-         tip += this.state.squares[this.state.check_mode].div.join(',D');
+         tip += this.state.squares[this.state.check_mode].div.map(function(n){return n+1}).join(',D');
          tip += ' 或 H' + this.state.squares[this.state.check_mode].div.map(function (n) {
             if (n >= 7)
                n -= 4;
@@ -326,7 +472,7 @@ class Introduction extends React.Component {
          for (i in this.state.squares[this.state.check_mode].div)
             inf.push(this.state.squares[this.state.squares[this.state.check_mode].div[i]].inf)
          tip += inf.join(' XOR ')
-         
+
          tip += '\n = ' + this.state.code[this.state.check_mode];
       }
       for (i = 0; i < this.state.i_len; i++) {
@@ -344,19 +490,19 @@ class Introduction extends React.Component {
             this.render_buttons(i)
          )
       }
-      for (i = 0; i < this.state.i_len + this.state.s_len; i++) {
+      for (i = 0; i < this.state.len; i++) {
          if (!this.state.squares[i].is_s)
             inf_cs.push(
                this.renderSquare_cs(i)
             )
       }
-      for (i = 0; i < this.state.i_len + this.state.s_len; i++) {
+      for (i = 0; i < this.state.len; i++) {
          if (this.state.squares[i].is_s)
             inf_cs.push(
                this.renderSquare_cs(i)
             )
       }
-      for (i = 0; i < this.state.i_len + this.state.s_len; i++) {
+      for (i = 0; i < this.state.len; i++) {
          if ((!this.state.squares[i].is_s) || j === 0) {
             inf_mot.push(
                this.renderSquare_mot(j === 0 ? j++ : i)
@@ -364,9 +510,19 @@ class Introduction extends React.Component {
          }
       }
       inf_col.push(<TweenOne className="code-box-cul" style={{ width: '100px', opacity: 0, marginLeft: '10px' }} />)
-      for (i = 0; i < this.state.i_len + this.state.s_len; i++) {
+      for (i = 0; i < this.state.len; i++) {
          inf_col.push(
             this.renderSquare_col(i)
+         )
+      }
+      for (i = 0; i < this.state.len; i++) {
+         inf_final.push(
+            this.renderSquare_final(i)
+         )
+      }
+      for (i = 0; i < this.state.len; i++) {
+         inf_detect.push(
+            this.renderSquare_detect(i)
          )
       }
       return (
@@ -393,6 +549,12 @@ class Introduction extends React.Component {
                >
                   当传输出现单bit错误时，无论错误位置是信息位还是校验位，都能够被检测。
                      本质上是用多个奇偶校验来纠正单bit错。
+          </TweenOne>
+               <TweenOne className="banner-user-text"
+                  style={{ margin: 'relative', top: '30%' }}
+                  animation={{ y: 30, opacity: 0, type: 'from', delay: 100 }}
+               >
+                  通俗的讲，海明码就是对于本来m位的信息码增添r位校验码构成一个新的m+r位的码字，具有纠正一位错的功能。
           </TweenOne>
             </Element>
             <Element prefixCls="banner-user-elem" key="1" >
@@ -466,7 +628,7 @@ class Introduction extends React.Component {
                      {inf_mot}
                   </Grid>
                   <Grid item xs={4}>
-                     <Button color="primary" fullWidth variant="contained" style={{ whiteSpace: 'pre-wrap' }}>
+                     <Button color="primary" fullWidth variant="contained" style={{ fontSize: "11px", whiteSpace: 'pre-wrap' }}>
                         {tip}
                      </Button>
                   </Grid>
@@ -481,13 +643,91 @@ class Introduction extends React.Component {
                         {buttons}
                      </ButtonGroup>
                   </Grid>
+                  <Grid item xs={8}>
+                  </Grid>
+                  <Grid item xs={4}>
+                     <ButtonGroup
+                        color="primary"
+                        size="large"
+                        fullWidth aria-label="full width outlined button group">
+                        <Button
+                           variant="contained"
+                           onClick={() => this.reset_mot()} //
+                        >
+                           重置
+                     </Button>
+                        <Button
+                           variant="contained"
+                           onClick={() => this.gen_cd()} //
+                        >
+                           一键计算
+                     </Button>
+                     </ButtonGroup>
+
+                  </Grid>
+               </Grid>
+            </Element>
+            <Element prefixCls="banner-user-elem" key="2" >
+               <BgElement key="bg" className="bg" style={{ background: '#fff1e9' }} />
+               <TweenOne className="banner-user-title" style={{ margin: 'relative', top: '20%' }} animation={{ y: 30, opacity: 0, type: 'from' }}>
+                  最终海明码
+          </TweenOne>
+               <div className="box-queue" style={{ margin: 'relative', top: '40%' }}>
+                  {inf_final}
+               </div>
+            </Element>
+            <Element prefixCls="banner-user-elem" key="3">
+               <BgElement key="bg" className="bg" style={{ background: '#f9f6f2' }} />
+               <Grid container spacing={3} style={{ marginTop: '1%', marginLeft: '1%' }}>
+                  <Grid item xs={4}>
+                     <TweenOne className="banner-user-title" style={{ margin: 'relative' }} animation={{ y: 30, opacity: 0, type: 'from' }}>
+                        海明码纠错
+          </TweenOne>
+                  </Grid>
 
 
+                  <Grid item xs={7}>
+                     <Button color="primary" fullWidth variant="contained" style={{ fontSize: "11px", whiteSpace: 'pre-wrap' }}>
+                        {detect_tip}
+                     </Button>
+                  </Grid>
 
+                  <Grid item xs={4}>
+                     <UncontrolledTextField label="Decoding" readOnly={false} Getvalue={(e) => this.get_decode(e)} />
+                  </Grid>
+                  <Grid item xs={7} >
+                     <div className="box-queue" style={{ margin: 'relative' }}>
+                        {inf_final}
+                     </div>
+                  </Grid>
+                  <Grid item xs={4}>
+                     <ButtonGroup
+                        color="primary"
+                        size="large"
+                        fullWidth aria-label="full width outlined button group">
+                        <Button
+                           variant="contained"
+                           onClick={() => this.gen_cd()} //
+                        >
+                           计算海明码
+                     </Button>
+                        <Button
+                           variant="contained"
+                           onClick={() => this.detect()} //
+                        >
+                           纠错
+                     </Button>
+
+                     </ButtonGroup>
+
+                  </Grid>
+                  <Grid item xs={7} >
+                     <div className="box-queue" style={{ margin: 'relative' }}>
+                        {inf_detect}
+                     </div>
+                  </Grid>
 
                </Grid>
-
-
             </Element>
          </BannerAnim>);
    }

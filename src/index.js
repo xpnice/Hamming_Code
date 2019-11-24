@@ -45,9 +45,9 @@ class Board extends React.Component {
       for (i = 0; i < jsonData[0].inf_length; i++) {
          squares[i] = {
             inf: jsonData[0].inf_code[i] === '1' ? 1 : 0,
-            pos: 'H' + i,
-            check_no: -1,
-            selected: 0
+            pos: 'H' + i,//码位的信息
+            check_no: -1,//校验位位置，不是为0
+            selected: 0//是否被选
          };
       }
       this.state = {
@@ -325,8 +325,15 @@ class Board extends React.Component {
       if (this.state.select_no !== -1) {
          var no = this.state.select_no + 1;
          i = this.get_check_pos(no - 1);
-         cal = this.state.squares[i].pos + " = " + this.state.squares[i].pos;
-         for (var j = i + 1; j < this.state.length; j++) {
+         var j
+         cal = this.state.squares[i].pos + " = ";
+         for ( j= i + 1; j < this.state.length; j++) {
+            if (((j - i) % (2 * no)) < no) {
+               cal += this.state.squares[j++].pos;
+               break;
+            }
+         }
+         for (; j < this.state.length; j++) {
             if (((j - i) % (2 * no)) < no) {
                cal += " XOR " + this.state.squares[j].pos;
             }
