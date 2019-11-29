@@ -51,6 +51,7 @@ Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick vi
 | ani4   | object |   校验位计算动画   |
 | ani5   | object | 最终海明码展示动画 |
 | ani6   | object |      纠错动画      |
+
 对象内部的配置
 
 | 变量名   |  类型  | 缺省  |               备注               |
