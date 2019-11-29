@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Introduction from './intro';
 import PropTypes from 'prop-types';
-import jsonData from "./config.json";
+import json_config from "./config.json";
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -22,17 +22,12 @@ import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/
 const theme = createMuiTheme({
    palette: {
       primary: {
-         main: "#ffd5d5"
+         main: json_config.color.primary
       },
       secondary: {
-         main: "#fff1e9"
-      },
-      default: {
-         main: "#f9f6f2"
-      },
-      disabled: {
-         main: "#f9f6f2"
+         main:  json_config.color.secondary
       }
+
    }
    
 });
@@ -42,9 +37,9 @@ class Board extends React.Component {
       const squares = [];
       const able = [1, 1, 0];
       var i;
-      for (i = 0; i < jsonData[0].inf_length; i++) {
+      for (i = 0; i < json_config.code.inf_length; i++) {
          squares[i] = {
-            inf: jsonData[0].inf_code[i] === '1' ? 1 : 0,
+            inf: json_config.code.inf_code[i] === '1' ? 1 : 0,
             pos: 'H' + i,//码位的信息
             check_no: -1,//校验位位置，不是为0
             selected: 0//是否被选
@@ -52,8 +47,8 @@ class Board extends React.Component {
       }
       this.state = {
          squares: squares,
-         length: jsonData[0].inf_length,
-         code: jsonData[0].inf_code,
+         length: json_config.code.inf_length,
+         code: json_config.code.inf_code,
          able: able,
          select_no: -1,
          decode: null
@@ -153,9 +148,9 @@ class Board extends React.Component {
    init_Square() {
       const squares = [];
       var i;
-      for (i = 0; i < jsonData[0].inf_length; i++) {
+      for (i = 0; i < json_config.code.inf_length; i++) {
          squares[i] = {
-            inf: jsonData[0].inf_code[i] === '1' ? 1 : 0,
+            inf: json_config.code.inf_code[i] === '1' ? 1 : 0,
             pos: 'H' + i,
             check_no: -1,
             selected: 0
@@ -163,8 +158,8 @@ class Board extends React.Component {
       }
       this.setState({
          squares: squares,
-         length: jsonData[0].inf_length,
-         code: jsonData[0].inf_code,
+         length: json_config.code.inf_length,
+         code: json_config.code.inf_code,
          able: [1, 1, 0],
          select_no: -1
       });
@@ -281,7 +276,7 @@ class Board extends React.Component {
          return;
       }
       var that = this;
-      var no = that.get_huming_len(jsonData[0].inf_length);
+      var no = that.get_huming_len(json_config.code.inf_length);
       var detect_code = Array(no);
       var j, i;
       var check_no

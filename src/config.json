@@ -1,9 +1,47 @@
-[
 {
-    "inf_length":5,
-    "inf_code":"11110",
-    "show_length":4,
-    "show_code":"1011"
-
+    "code": {
+        "inf_length": 4,
+        "inf_code": "1111",
+        "show_length": 4,
+        "show_code": "1101"
+    },
+    "color": {
+        "text": "#45454d",
+        "primary": "#ffd5d5",
+        "square_inf": "#ffd5d5",
+        "square_s": "#fc7fb2",
+        "secondary": "#fff1e9",
+        "highlight": "#fc7fb2",
+        "backgroud1":"#f9f6f2",
+        "backgroud2":"#fff1e9"
+    },
+    "square": {
+        "width": 50,
+        "height": 50,
+        "marginLeft": 10,
+        "marginTop": 10,
+        "col_width":120
+    },
+    "animation": {
+        "ani1": {},
+        "ani2": {
+            "delay": 1000,
+            "duration": 1000
+        },
+        "ani3": {
+            "delay": 1000,
+            "duration": 1000
+        },
+        "ani4": {
+            "xor": {
+                "scale": 0.7,
+                "repeat":3,
+                "duration":150
+            },
+            "duration": 1000,
+            "delay": 1000
+        },
+        "ani5": {},
+        "ani6": {}
+    }
 }
-]

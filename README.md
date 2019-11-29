@@ -5,6 +5,55 @@ This project is a group assignment on Computer Network, aimed to explain how ham
 
 ## Try It Out!
 Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick view of our project!
+## config.json中的变量说明
+### code
+信息码的长度与内容
+| 变量名      |  类型  |  缺省  |        备注        |
+| ----------- | :----: | :----: | :----------------: |
+| inf_length  | number |   4    | 首页信息码长(1~11) |
+| inf_code    | string | "1111" |     首页信息码     |
+| show_length | number |   4    | 次页信息码长(3~5)  |
+| show_code   | string | "1101" |     次页信息码     |
+### color  
+配色
+| 变量名     |  类型  |   缺省    |            备注             |
+| ---------- | :----: | :-------: | :-------------------------: |
+| text       | string | "#45454d" |          文本颜色           |
+| primary    | string | "#ffd5d5" |          按钮颜色           |
+| square_inf | string | "#ffd5d5" |     次页信息码方块颜色      |
+| square_s   | string | "#fc7fb2" |     次页校验码方块颜色      |
+| secondary  | string | "#fff1e9" |     首页信息码方块颜色      |
+| highlight  | string | "#fc7fb2" | 首页校验码方块颜色\高亮颜色 |
+| backgroud1 | string | "#f9f6f2" |      次页导航栏背景色1      |
+| backgroud2 | string | "#fff1e9" |      次页导航栏背景色2      |
+
+### square
+码元方块的基本配置，注意width和height务必与css文件中的code-box-shape中的同名项保持一致，只修改这里会动画错位
+| 变量名     |  类型  | 缺省  |      备注      |
+| ---------- | :----: | :---: | :------------: |
+| width      | number |  50   |    方块宽度    |
+| height     | number |  50   |    方块高度    |
+| marginLeft | number |  10   |   方块列间距   |
+| marginTop  | number |  10   |   方块行间距   |
+| col_width  | number |  120  | 左侧边栏的宽度 |
+
+### animation
+动画配置
+| 变量名 |  类型  |        备注        |
+| ------ | :----: | :----------------: |
+| ani1   | object |  海明码检测页动画  |
+| ani2   | object | 校验位数的计算动画 |
+| ani3   | object |   校验位移位动画   |
+| ani4   | object |   校验位计算动画   |
+| ani5   | object | 最终海明码展示动画 |
+| ani6   | object |      纠错动画      |
+对象内部的配置
+| 变量名   |  类型  | 缺省  |               备注               |
+| -------- | :----: | :---: | :------------------------------: |
+| delay    | number | 1000  |        动画延时（单位ms）        |
+| duration | number |  450  |           动画持续时间           |
+| scale    | number |  0.7  | 以方块中心为中心缩放到scale(0~1) |
+| repeat   | number |   1   |           动画重复次数           |
 ## Befor You Start
 Make sure you have a recent version of [Node.js](https://nodejs.org/en/) installed.
 
