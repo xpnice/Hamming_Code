@@ -8,6 +8,7 @@ Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick vi
 ## config.json中的变量说明
 ### code
 信息码的长度与内容
+
 | 变量名      |  类型  |  缺省  |        备注        |
 | ----------- | :----: | :----: | :----------------: |
 | inf_length  | number |   4    | 首页信息码长(1~11) |
