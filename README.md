@@ -17,6 +17,7 @@ Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick vi
 | show_code   | string | "1101" |     次页信息码     |
 ### color  
 配色
+
 | 变量名     |  类型  |   缺省    |            备注             |
 | ---------- | :----: | :-------: | :-------------------------: |
 | text       | string | "#45454d" |          文本颜色           |
@@ -30,6 +31,7 @@ Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick vi
 
 ### square
 码元方块的基本配置，注意width和height务必与css文件中的code-box-shape中的同名项保持一致，只修改这里会动画错位
+
 | 变量名     |  类型  | 缺省  |      备注      |
 | ---------- | :----: | :---: | :------------: |
 | width      | number |  50   |    方块宽度    |
@@ -40,6 +42,7 @@ Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick vi
 
 ### animation
 动画配置
+
 | 变量名 |  类型  |        备注        |
 | ------ | :----: | :----------------: |
 | ani1   | object |  海明码检测页动画  |
@@ -49,6 +52,7 @@ Click [Hamming_Code](https://xpnice.github.io/Hamming_Code/) and have a quick vi
 | ani5   | object | 最终海明码展示动画 |
 | ani6   | object |      纠错动画      |
 对象内部的配置
+
 | 变量名   |  类型  | 缺省  |               备注               |
 | -------- | :----: | :---: | :------------------------------: |
 | delay    | number | 1000  |        动画延时（单位ms）        |
