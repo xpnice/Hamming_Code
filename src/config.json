@@ -1,7 +1,7 @@
 {
     "code": {
-        "inf_length": 4,
-        "inf_code": "1111",
+        "inf_length": 6,
+        "inf_code": "111001",
         "show_length": 4,
         "show_code": "1101"
     },
@@ -20,7 +20,11 @@
         "height": 50,
         "marginLeft": 10,
         "marginTop": 10,
-        "col_width":120
+        "col_width":120,
+        "width_74":35,
+        "height_74":33,
+        "marginLeft_74": 10,
+        "marginTop_74": 6
     },
     "animation": {
         "ani1": {},
